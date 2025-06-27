@@ -34,10 +34,10 @@
     <section>
       <h2>Projects</h2>
       <div class="project">
-        <h3>🎮 Number Guessing Game (PHP + HTML)</h3>
-        <button onclick="toggleCode('code1')">View Code</button>
-        <pre id="code1" class="code-box" style="display:none;">
-<?php
+        <h3>Number Guessing Game (PHP + HTML)</h3>
+<button onclick="toggleCode('code1')">View Code</button>
+<pre id="code1" class="code-box" style="display:none;"><code class="language-php">
+&lt;?php
 session_start();
 
 if (!isset($_SESSION['random_number'])) {
@@ -56,67 +56,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         session_destroy();
     }
 }
-?></pre>
+?&gt;
 
-<pre class="code-box" style="display:none;" id="code2">
-<!DOCTYPE html>
-<html>
-<head><title>Number Game</title></head>
-<body>
-    <h2>Guess the Number (1 to 100)</h2>
-    <form method="post">
-        <input type="number" name="guess" required>
-        <button type="submit">Submit Guess</button>
-    </form>
-    <p><?php echo $message; ?></p>
-</body>
-</html>
-</pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Number Guessing Game&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h2&gt;Guess the Number (1 to 100)&lt;/h2&gt;
+    &lt;form method="post"&gt;
+        &lt;input type="number" name="guess" required&gt;
+        &lt;button type="submit"&gt;Submit Guess&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;p&gt;&lt;?php echo $message; ?&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
 
 
       </div>
 
       <div class="project">
-        <h3>⌨️ Typing Speed Calculator</h3>
-        <button onclick="toggleCode('code2')">View Code</button>
-        <pre id="code2" class="code-box" style="display:none;">
+        <h3>Typing Speed Calculator (Python)</h3>
+<button onclick="toggleCode('code2')">View Code</button>
+<pre id="code2" class="code-box" style="display:none;"><code class="language-python">
 import time
 
-# Sample text for typing test
 text = "The quick brown fox jumps over the lazy dog."
-
 print("Typing Speed Test")
-print("Type the following text and press Enter when done:\n")
+print("Type the following text and press Enter when done:\\n")
 print(text)
-input("Press Enter when you are ready to start...")
+input("Press Enter when ready...")
 
-# Start the timer
-start_time = time.time()
+start = time.time
+typed = input("Start typing: ")
+end = time.time()
 
-# User input
-typed_text = input("\nStart typing: ")
+elapsed = end - start
+wpm = (len(typed.split()) / elapsed) * 60
 
-# End the timer
-end_time = time.time()
-
-# Calculate typing speed
-elapsed_time = end_time - start_time  # Time taken in seconds
-word_count = len(text.split())  # Total words in the sample text
-typed_words = len(typed_text.split())  # Words typed by the user
-
-# Calculate WPM
-wpm = (typed_words / elapsed_time) * 60
-
-# Calculate Accuracy
-correct_words = sum(1 for a, b in zip(typed_text.split(), text.split()) if a == b)
-accuracy = (correct_words / word_count) * 100
-
-# Display Results
-print("\nResults:")
-print(f"Time Taken: {round(elapsed_time, 2)} seconds")
-print(f"Typing Speed: {round(wpm, 2)} WPM")
-print(f"Accuracy: {round(accuracy, 2)}%")
-   </pre>
+print("Typing Speed:", round(wpm, 2), "WPM")
+</code></pre>
       </div>
 
       <div class="project">
