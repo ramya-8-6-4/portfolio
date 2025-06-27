@@ -39,16 +39,41 @@
         <pre id="code1" class="code-box" style="display:none;">
 <?php
 session_start();
+
 if (!isset($_SESSION['random_number'])) {
-  $_SESSION['random_number'] = rand(1, 100);
+    $_SESSION['random_number'] = rand(1, 100);
 }
+
+$message = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $guess = intval($_POST['guess']);
-  echo $guess > $_SESSION['random_number'] ? "Too high" :
-       ($guess < $_SESSION['random_number'] ? "Too low" : "Correct!");
+    $guess = intval($_POST['guess']);
+    if ($guess > $_SESSION['random_number']) {
+        $message = "Too high! Try again.";
+    } elseif ($guess < $_SESSION['random_number']) {
+        $message = "Too low! Try again.";
+    } else {
+        $message = "Congratulations! You guessed it right.";
+        session_destroy();
+    }
 }
-?>
-        </pre>
+?></pre>
+
+<pre class="code-box" style="display:none;" id="code2">
+<!DOCTYPE html>
+<html>
+<head><title>Number Game</title></head>
+<body>
+    <h2>Guess the Number (1 to 100)</h2>
+    <form method="post">
+        <input type="number" name="guess" required>
+        <button type="submit">Submit Guess</button>
+    </form>
+    <p><?php echo $message; ?></p>
+</body>
+</html>
+</pre>
+
+
       </div>
 
       <div class="project">
@@ -56,13 +81,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <button onclick="toggleCode('code2')">View Code</button>
         <pre id="code2" class="code-box" style="display:none;">
 import time
+
+# Sample text for typing test
 text = "The quick brown fox jumps over the lazy dog."
-input("Start typing: ")
-start = time.time()
-typed = input()
-end = time.time()
-print("Speed:", len(typed.split()) / (end - start) * 60)
-        </pre>
+
+print("Typing Speed Test")
+print("Type the following text and press Enter when done:\n")
+print(text)
+input("Press Enter when you are ready to start...")
+
+# Start the timer
+start_time = time.time()
+
+# User input
+typed_text = input("\nStart typing: ")
+
+# End the timer
+end_time = time.time()
+
+# Calculate typing speed
+elapsed_time = end_time - start_time  # Time taken in seconds
+word_count = len(text.split())  # Total words in the sample text
+typed_words = len(typed_text.split())  # Words typed by the user
+
+# Calculate WPM
+wpm = (typed_words / elapsed_time) * 60
+
+# Calculate Accuracy
+correct_words = sum(1 for a, b in zip(typed_text.split(), text.split()) if a == b)
+accuracy = (correct_words / word_count) * 100
+
+# Display Results
+print("\nResults:")
+print(f"Time Taken: {round(elapsed_time, 2)} seconds")
+print(f"Typing Speed: {round(wpm, 2)} WPM")
+print(f"Accuracy: {round(accuracy, 2)}%")
+   </pre>
       </div>
 
       <div class="project">
@@ -70,11 +124,35 @@ print("Speed:", len(typed.split()) / (end - start) * 60)
         <button onclick="toggleCode('code3')">View Code</button>
         <pre id="code3" class="code-box" style="display:none;">
 import pandas as pd
+from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
-data = pd.read_excel("student_data.xlsx")
+from sklearn.metrics import accuracy_score
+
+# Load Excel file
+data = pd.read_excel("C:/Users/ramya/Downloads/student_data.xlsx")
+
+# Convert labels to binary
+data['Result'] = data['Result'].map({'Pass': 1, 'Fail': 0})
+
+# Features and Target
 X = data[['Hours_Studied', 'Attendance', 'Assignment_Score']]
-y = data['Result'].map({'Pass': 1, 'Fail': 0})
-model = LogisticRegression().fit(X, y)
+y = data['Result']
+
+# Train-Test Split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Train model
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+# Prediction
+y_pred = model.predict(X_test)
+print("Accuracy:", accuracy_score(y_test, y_pred))
+
+# Predict new student
+new_student = [[4, 75, 60]]
+result = model.predict(new_student)
+print("Prediction:", "Pass" if result[0] == 1 else "Fail")
         </pre>
       </div>
 
@@ -82,12 +160,68 @@ model = LogisticRegression().fit(X, y)
         <h3>📄 Resume Analyzer</h3>
         <button onclick="toggleCode('code4')">View Code</button>
         <pre id="code4" class="code-box" style="display:none;">
-import pdfplumber, pandas as pd, re
+import pdfplumber
+import pandas as pd
+import re
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-# load and analyze resume...
-        </pre>
+
+# Load job roles
+jobs_df = pd.read_csv("job_roles.csv")
+
+# Load and extract resume text
+def extract_text_from_pdf(pdf_path):
+    text = ""
+    with pdfplumber.open(pdf_path) as pdf:
+        for page in pdf.pages:
+            text += page.extract_text() + " "
+    return text
+
+# Preprocess and extract keywords
+def clean_text(text):
+    text = text.lower()
+    text = re.sub(r'[^a-zA-Z\s]', '', text)
+    return text
+
+def extract_skills(text, skill_list):
+    found = []
+    text = clean_text(text)
+    for skill in skill_list:
+        if skill in text:
+            found.append(skill)
+    return list(set(found))
+
+# Match resume to job roles
+def match_job_roles(resume_skills, job_roles):
+    roles = job_roles["role"].tolist()
+    required_skills = job_roles["skills_required"].tolist()
+
+    # Add resume skills to comparison
+    texts = required_skills + [", ".join(resume_skills)]
+    vect = CountVectorizer().fit_transform(texts)
+    similarity = cosine_similarity(vect)
+
+    scores = similarity[-1][:-1]  # last row vs others
+    matches = pd.DataFrame({"role": roles, "score": scores})
+    matches = matches.sort_values(by="score", ascending=False)
+    return matches
+
+# ----------- MAIN PROGRAM -------------
+# Step 1: Extract resume text
+resume_text = extract_text_from_pdf("resume.pdf")  # replace with your PDF
+all_possible_skills = set(sum([s.split(', ') for s in jobs_df['skills_required']], []))
+
+# Step 2: Extract skills from resume
+resume_skills = extract_skills(resume_text, all_possible_skills)
+print("🧠 Extracted Resume Skills:", resume_skills)
+
+# Step 3: Match to job roles
+matched_jobs = match_job_roles(resume_skills, jobs_df)
+print("\n✅ Best Matching Job Roles:")
+print(matched_jobs.head())
+          </pre>
       </div>
+
     </section>
 
     <section>
