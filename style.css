@@ -29,10 +29,14 @@ body {
   border-radius: 10px;
 }
 .code-box {
-  background: black;
-  color: #0f0;
-  padding: 10px;
+  background: #1e1e1e;
+  color: #00ff88;
+  padding: 15px;
   overflow-x: auto;
+  white-space:pre;
+  font-family:monospace;
+  font-size: 140px;
+  max-width: 100%;
 }
 .button {
   display: inline-block;
