@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D. Ramalakshmi | Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="particles-js"></div>
+  <div class="container">
+    <header>
+      <img src="assets/profile.jpg" alt="Profile" class="profile-img">
+      <h1>D. Ramalakshmi</h1>
+      <p>Final Year B.Sc. Student | Aspiring Software Developer</p>
+      <a class="button" href="assets/ramalakshmi_resume.pdf" download>📄 Download Resume</a>
+    </header>
+
+    <section>
+      <h2>Skills</h2>
+      <ul class="skills-list">
+        <li>Python</li>
+        <li>Java</li>
+        <li>SQL</li>
+        <li>HTML</li>
+        <li>CSS</li>
+        <li>Machine Learning</li>
+        <li>MS Word</li>
+        <li>Public Speaking</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Projects</h2>
+      <div class="project">
+        <h3>🎮 Number Guessing Game (PHP + HTML)</h3>
+        <button onclick="toggleCode('code1')">View Code</button>
+        <pre id="code1" class="code-box" style="display:none;">
+<?php
+session_start();
+if (!isset($_SESSION['random_number'])) {
+  $_SESSION['random_number'] = rand(1, 100);
+}
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $guess = intval($_POST['guess']);
+  echo $guess > $_SESSION['random_number'] ? "Too high" :
+       ($guess < $_SESSION['random_number'] ? "Too low" : "Correct!");
+}
+?>
+        </pre>
+      </div>
+
+      <div class="project">
+        <h3>⌨️ Typing Speed Calculator</h3>
+        <button onclick="toggleCode('code2')">View Code</button>
+        <pre id="code2" class="code-box" style="display:none;">
+import time
+text = "The quick brown fox jumps over the lazy dog."
+input("Start typing: ")
+start = time.time()
+typed = input()
+end = time.time()
+print("Speed:", len(typed.split()) / (end - start) * 60)
+        </pre>
+      </div>
+
+      <div class="project">
+        <h3>📊 Student Performance Prediction</h3>
+        <button onclick="toggleCode('code3')">View Code</button>
+        <pre id="code3" class="code-box" style="display:none;">
+import pandas as pd
+from sklearn.linear_model import LogisticRegression
+data = pd.read_excel("student_data.xlsx")
+X = data[['Hours_Studied', 'Attendance', 'Assignment_Score']]
+y = data['Result'].map({'Pass': 1, 'Fail': 0})
+model = LogisticRegression().fit(X, y)
+        </pre>
+      </div>
+
+      <div class="project">
+        <h3>📄 Resume Analyzer</h3>
+        <button onclick="toggleCode('code4')">View Code</button>
+        <pre id="code4" class="code-box" style="display:none;">
+import pdfplumber, pandas as pd, re
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+# load and analyze resume...
+        </pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>Certifications</h2>
+      <div class="certificates">
+        <div class="certificate-card"><p>Python – Infosys</p><a href="https://drive.google.com/file/d/1nudiMoqhcZiP5zBbbkHVhsr693l68bQx/view">View</a></div>
+        <div class="certificate-card"><p>Python – Infyskill</p><a href="https://drive.google.com/file/d/1pOus9Ox-lADCia8Mu4IMxjCiw-ocZaVj/view">View</a></div>
+        <div class="certificate-card"><p>Database Foundations – Oracle</p><a href="https://drive.google.com/file/d/1nu_H4LIhmKVd34n6i1dgtrvrHb-qSbiZ/view">View</a></div>
+        <div class="certificate-card"><p>Java Foundations – Oracle</p><a href="https://drive.google.com/file/d/1pPhm5dIy02xrBYDEco-r-LBAa1opAJC_/view">View</a></div>
+        <div class="certificate-card"><p>Networking – Cisco</p><a href="https://drive.google.com/file/d/1nwwkJDYyEIwunwTUuQgjYKLeeqidP5NH/view">View</a></div>
+        <div class="certificate-card"><p>Meepro Certification</p><a href="https://drive.google.com/file/d/1pWO5kTbA9HfxnKfpyZmczLXae1iwWkGM/view">View</a></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Contact</h2>
+      <p>Email: diviliramalakshmi@gmail.com</p>
+      <p>Phone: 7075018373</p>
+      <p>LinkedIn: <a href="https://www.linkedin.com/in/ramalakshmi-divili-b3717a24b">linkedin.com/in/ramalakshmi-divili</a></p>
+    </section>
+  </div>
+
+  <script>
+    function toggleCode(id) {
+      const box = document.getElementById(id);
+      box.style.display = box.style.display === "none" ? "block" : "none";
+    }
+  </script>
+</body>
+</html>
