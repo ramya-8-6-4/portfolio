@@ -33,9 +33,10 @@ body {
   color: #00ff88;
   padding: 15px;
   overflow-x: auto;
-  white-space:pre;
+  white-space:pre-wrap;
+  word-break:normal;
   font-family:monospace;
-  font-size: 140px;
+  font-size: 14px;
   max-width: 100%;
 }
 .button {
